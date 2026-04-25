@@ -38,11 +38,20 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "apiBaseUrl": "https://mobilebackend-b441.onrender.com/api",
+      "router": {},
+      "eas": {
+        "projectId": "50a053f1-47b2-4cc9-a603-cc865abf0e5c"
+      }
+    },
+    "owner": "filcareclinic"
   }
 }
