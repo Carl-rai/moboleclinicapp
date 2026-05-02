@@ -37,11 +37,16 @@ async function apiRequest<T>(path: string, options: RequestOptions = {}): Promis
   const payload = await response.json().catch(() => ({}));
 
   if (!response.ok) {
+    const detail = typeof payload?.detail === 'string' ? payload.detail : '';
+    const error = typeof payload?.error === 'string' ? payload.error : '';
+    const nonFieldError = Array.isArray(payload?.non_field_errors) ? payload.non_field_errors[0] : '';
+    const fieldError = Object.values(payload ?? {})
+      .flat()
+      .find((value) => typeof value === 'string' && value.trim().length > 0) as string | undefined;
     const errorMessage =
-      payload?.detail ||
-      payload?.non_field_errors?.[0] ||
-      Object.values(payload ?? {}).flat()[0] ||
-      'Something went wrong.';
+      [detail, error, nonFieldError, fieldError]
+        .filter((value, index, values) => typeof value === 'string' && value.trim().length > 0 && values.indexOf(value) === index)
+        .join(' | ') || 'Something went wrong.';
 
     throw new Error(String(errorMessage));
   }
